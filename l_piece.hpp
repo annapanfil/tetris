@@ -3,10 +3,10 @@
 #include "piece.hpp"
 
 class L_piece: public Piece{
-  bool shape[3][2] = {{1,1}, {0,1}, {0,1}};
+  bool shape[2][3] = {{1,1,1}, {0,0,1}};
 public:
   L_piece(int x, int y, const int PIXEL); //TODO: from board
-  sf::RectangleShape* visual;
+  std::vector<sf::RectangleShape*> visual;
 };
 
 #endif //TETRIS_LPIECE_H
