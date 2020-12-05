@@ -21,7 +21,8 @@ int main()
        }
 
         window.clear();
-        window.draw(*l_piece.visual);
+        for (auto elem: l_piece.visual)
+          window.draw(*elem);
         window.display();
     }
 
