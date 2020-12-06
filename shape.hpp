@@ -2,8 +2,10 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
+using std::vector;
+
 class Shape{
-  std::vector<std::vector<bool>> matrix;
+  vector<vector<bool>> matrix;
 protected:
   int position[2];
 public:
