@@ -24,6 +24,8 @@ int main()
         for (auto elem: piece.visual)
           window.draw(*elem);
         window.display();
+        sf::sleep(sf::milliseconds(170)); //TODO: sf::clock
+        piece.move_down(PIXEL);
     }
 
     return 0;

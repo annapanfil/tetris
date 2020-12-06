@@ -8,6 +8,8 @@ Piece::Piece(int x, int y, const int PIXEL){
   this -> shape = random_shape();
   this -> position[0] = x;
   this -> position[1] = y;
+
+  //TODO:make the sf::view container
   for(int row=0; row<2; row++){
     for(int col=0; col<3; col++){
       if (shape[row][col] == 1){
@@ -20,10 +22,10 @@ Piece::Piece(int x, int y, const int PIXEL){
   }
 }
 
-std::vector<std::vector<bool>> Piece::random_shape(){
+vector<vector<bool>> Piece::random_shape(){
     srand (time(NULL));
     int choice = rand() % 1;
-    std::vector<std::vector<bool>> shape = {{},{}};
+    vector<vector<bool>> shape = {{},{}};
 
     switch(choice){
 
@@ -32,4 +34,17 @@ std::vector<std::vector<bool>> Piece::random_shape(){
       shape[1].insert(shape[1].end(),{0,0,1}); break;
     }
     return shape;
+}
+
+void Piece::move_down(int PIXEL){
+  this -> position[1] += PIXEL;
+  //TODO: move all at once
+  // for (auto rectangle: this->visual)
+  //     rectangle -> sf::Transformable::setPosition(position[0], position[1]);
+
+  // for(int row=0; row<2; row++){
+  //   for(int col=0; col<3; col++){
+  //       this->visual[row][col].sf::Transformable::setPosition(position[0]+(col-1)*PIXEL, position[1]+row*PIXEL);
+  //     }
+  //   }
 }
