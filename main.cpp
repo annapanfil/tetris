@@ -2,14 +2,14 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-#include "l_piece.hpp"
+#include "piece.hpp"
 
 const int PIXEL = 20; //TODO: in board
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(400,600), "Tetris"); //TODO: from board dimensions
-    L_piece l_piece((400-PIXEL)/2,0, PIXEL);
+    Piece piece((400-PIXEL)/2,0, PIXEL);
 
    while (window.isOpen())
     {
@@ -21,7 +21,7 @@ int main()
        }
 
         window.clear();
-        for (auto elem: l_piece.visual)
+        for (auto elem: piece.visual)
           window.draw(*elem);
         window.display();
     }
