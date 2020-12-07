@@ -9,6 +9,7 @@ const int PIXEL = 20; //TODO: in board
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(400,600), "Tetris"); //TODO: from board dimensions
+    window.setFramerateLimit(5);
     Piece piece((400-PIXEL)/2,0, PIXEL);
 
    while (window.isOpen())
@@ -21,11 +22,11 @@ int main()
        }
 
         window.clear();
-        for (auto elem: piece.visual)
-          window.draw(*elem);
+        window.draw(piece);
         window.display();
-        sf::sleep(sf::milliseconds(170)); //TODO: sf::clock
-        piece.move_down(PIXEL);
+        // sf::sleep(sf::milliseconds(170)); //TODO: sf::clock
+        piece.move_down();
+        piece.move_horizontally();
     }
 
     return 0;
