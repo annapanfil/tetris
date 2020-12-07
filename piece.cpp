@@ -8,6 +8,7 @@ Piece::Piece(int x, int y, const int PIXEL){
   this -> shape = random_shape();
   this -> position[0] = x;
   this -> position[1] = y;
+  this -> PIXEL = PIXEL;
 
   //TODO:make the sf::view container
   for(int row=0; row<2; row++){
@@ -21,6 +22,7 @@ Piece::Piece(int x, int y, const int PIXEL){
     }
   }
 }
+
 
 vector<vector<bool>> Piece::random_shape(){
     srand (time(NULL));
@@ -36,15 +38,33 @@ vector<vector<bool>> Piece::random_shape(){
     return shape;
 }
 
-void Piece::move_down(int PIXEL){
+
+void Piece::draw(sf::RenderTarget& target, sf::RenderStates state) const{
+  for (auto elem: this->visual)
+    target.draw(*elem);
+}
+
+
+void Piece::move_down(){
   this -> position[1] += PIXEL;
   //TODO: move all at once
-  // for (auto rectangle: this->visual)
-  //     rectangle -> sf::Transformable::setPosition(position[0], position[1]);
+  for (auto rectangle: this->visual)
+      rectangle -> sf::Transformable::setPosition(position[0], position[1]);
 
   // for(int row=0; row<2; row++){
   //   for(int col=0; col<3; col++){
   //       this->visual[row][col].sf::Transformable::setPosition(position[0]+(col-1)*PIXEL, position[1]+row*PIXEL);
   //     }
   //   }
+}
+
+void Piece::move_horizontally(){
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) //&& o nic nie uderzy
+    this->position[0] -= PIXEL;
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) //&& o nic nie uderzy
+    this->position[0] += PIXEL;
+
+
+  for (auto rectangle: this->visual)
+      rectangle -> sf::Transformable::setPosition(position[0], position[1]);
 }
