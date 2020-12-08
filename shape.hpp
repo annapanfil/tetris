@@ -7,7 +7,7 @@ using std::vector;
 class Shape{
   vector<vector<bool>> matrix;
 protected:
-  int position[2];
+  int position[2]; //left top
 public:
   // sf::RectangleShape* show();
   // virtual void check() = 0;
