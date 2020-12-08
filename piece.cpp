@@ -4,17 +4,14 @@
 
 #include "piece.hpp"
 
-Piece::Piece(int x, int y, const int PIXEL){
+Piece::Piece(int x, int y, Board* board):Shape(x,y, board){
   this -> shape = random_shape();
-  this -> position[0] = x;
-  this -> position[1] = y;
-  this -> PIXEL = PIXEL;
 
   for(int row=0; row<2; row++){
     for(int col=0; col<3; col++){
       if (shape[row][col] == 1){
-        sf::RectangleShape* rectangle = new sf::RectangleShape(sf::Vector2f(PIXEL, PIXEL));
-        rectangle -> sf::Transformable::setPosition(x+(col-1)*PIXEL, y+row*PIXEL);
+        sf::RectangleShape* rectangle = new sf::RectangleShape(sf::Vector2f(board->get_pixel(), board->get_pixel()));
+        rectangle -> sf::Transformable::setPosition(x+(col-1)*board->get_pixel(), y+row*board->get_pixel());
         rectangle -> sf::Shape::setFillColor(sf::Color::Green);
         this -> visual.push_back(rectangle);
       }
@@ -46,18 +43,34 @@ void Piece::draw(sf::RenderTarget& target, sf::RenderStates state) const{
 void Piece::move(int dx, int dy){
   this -> position[0] += dx;
   this -> position[1] += dy;
-  for (auto square: this->visual)
+  if (!(this -> wall_collision())){
+    for (auto square: this->visual)
       square -> sf::Transformable::move(dx, dy);
+  }
+  else{ //cofnij
+    std::cout<<this->position[0]<<std::endl;
+    this -> position[0] -= dx;
+    this -> position[1] -= dy;
+  }
 }
 
 void Piece::move_down(){
-  this -> move(0, PIXEL);
+  this -> move(0, board->get_pixel());
 }
 
 void Piece::move_horizontally(){
   if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) //&& o nic nie uderzy
-    this -> move(-PIXEL, 0);
+    this -> move(-board->get_pixel(), 0);
 
   if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) //&& o nic nie uderzy
-    this -> move(PIXEL, 0);
+    this -> move(board->get_pixel(), 0);
+}
+
+bool Piece::wall_collision(){
+  if (get_bottom()>=board->get_heigth() || get_left()<=0 || get_right()>=board->get_width()){
+    return true;
+  }
+  else{
+    return false;
+  }
 }
