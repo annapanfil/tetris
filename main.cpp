@@ -9,29 +9,38 @@ const int PIXEL = 20; //TODO: in board
 
 int main()
 {
+    //create window, board & pieces
     sf::RenderWindow window(sf::VideoMode(400,600), "Tetris", sf::Style::Close | sf::Style::Titlebar); //TODO: from board dimensions //sf::Style::Close || sf::Style::Titlebar
     window.setFramerateLimit(5);
     Board board(400,600, PIXEL);
     Piece piece((400-PIXEL)/2,0, &board);
-    sf::RectangleShape rectangle(sf::Vector2f(10,10));
-    rectangle.sf::Transformable::setPosition(0,0);
+    //clock
+    // sf::Clock clock;
+    // sf::Time timeSinceLastUpdate;
+    // sf::Time TimePerFrame = sf::seconds(1.f/60);
 
-    while (window.isOpen())
-    {
-    sf::Event event;
-    while (window.pollEvent(event))
-    {
-      switch(event.type){
-        case sf::Event::Closed:
-          window.close(); break;
-        // case sf::Event::Resized:
-        //   std::cout<<event.size.width;
-      }
+    //game loop
+    while (window.isOpen()){
+      sf::Event event;
+      while (window.pollEvent(event))
+      {
+        //process events
+        switch(event.type){
+          case sf::Event::Closed:
+            window.close(); break;
+          // case sf::Event::Resized:
+          //   std::cout<<event.size.width;
+        }
+        // timeSinceLastUpdate = clock.restart();
+        // while (timeSinceLastUpdate > TimePerFrame){
+        //     timeSinceLastUpdate -= TimePerFrame;
+        //     update(TimePerFrame);
+        // }
+
     }
 
     window.clear(); //można podać kolor
     window.draw(piece);
-    window.draw(rectangle);
     window.display();
     // sf::sleep(sf::milliseconds(170)); //TODO: sf::clock
     piece.move_down();
