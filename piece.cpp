@@ -3,6 +3,9 @@
 #include <iostream>
 
 #include "piece.hpp"
+using std::cout;
+using std::endl;
+
 
 Piece::Piece(int x, int y, Board* board):Shape(x,y, board){
   this -> shape = random_shape();
@@ -41,6 +44,8 @@ void Piece::draw(sf::RenderTarget& target, sf::RenderStates state) const{
 }
 
 void Piece::move(int dx, int dy){
+  dx *= board->get_pixel();
+  dy *= board->get_pixel();
   this -> position[0] += dx;
   this -> position[1] += dy;
   if (!(this -> wall_collision())){
@@ -55,15 +60,15 @@ void Piece::move(int dx, int dy){
 }
 
 void Piece::move_down(){
-  this -> move(0, board->get_pixel());
+  this -> move(0, 1);
 }
 
 void Piece::move_horizontally(){
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) //&& o nic nie uderzy
-    this -> move(-board->get_pixel(), 0);
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
+    this -> move(-1, 0);
 
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) //&& o nic nie uderzy
-    this -> move(board->get_pixel(), 0);
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+    this -> move(1, 0);
 }
 
 bool Piece::wall_collision(){
@@ -73,4 +78,31 @@ bool Piece::wall_collision(){
   else{
     return false;
   }
+}
+
+void Piece::rotate_clockwise(){
+  vector<vector<bool>> rotated_shape(shape[0].size(), vector<bool>());
+
+  //transpose
+  for (int i = 0; i<shape.size(); i++)
+    for (int j=0; j<shape[i].size(); j++)
+      rotated_shape[j].push_back(shape[i][j]);
+
+  //mirror vertically
+  for (int i = 0; i<rotated_shape.size(); i++)
+    std::reverse(rotated_shape[i].begin(), rotated_shape[i].end());
+
+}
+
+void Piece::rotate_counterclockwise(){
+  vector<vector<bool>> rotated_shape(shape[0].size(), vector<bool>());
+
+  //mirror vertically
+  for (int i = 0; i<shape.size(); i++)
+    std::reverse(shape[i].begin(), shape[i].end());
+
+  //transpose
+  for (int i = 0; i<shape.size(); i++)
+    for (int j=0; j<shape[i].size(); j++)
+      rotated_shape[j].push_back(shape[i][j]);
 }

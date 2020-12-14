@@ -13,5 +13,6 @@ public:
     void move_horizontally();
     void move_down();
     void draw(sf::RenderTarget& target, sf::RenderStates state) const override;
-    // void rotate(char direction);
+    void rotate_clockwise(); //char direction
+    void rotate_counterclockwise()
 };
