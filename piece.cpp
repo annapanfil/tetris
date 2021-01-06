@@ -105,6 +105,7 @@ void Piece::rotate_counterclockwise(){
   for (int i = 0; i<shape.size(); i++)
     for (int j=0; j<shape[i].size(); j++)
       rotated_shape[j].push_back(shape[i][j]);
-      
+
   this -> shape = rotated_shape;
+
 }
