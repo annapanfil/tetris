@@ -6,7 +6,6 @@
 using std::cout;
 using std::endl;
 
-
 Piece::Piece(int x, int y, Board* board):Shape(x,y, board){
   this -> shape = random_shape();
 
