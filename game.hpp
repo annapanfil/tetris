@@ -12,6 +12,7 @@ class Game{
 public:
   Game();
   void start();
+  void update();
   // void pause();
   // void end();
   // void increase_speed();

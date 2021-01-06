@@ -13,7 +13,7 @@ public:
     Piece(int x, int y, Board* Board);
     bool wall_collision();
     // bool stack_collision(Stack stack);
-    void move_horizontally();
+    void move_horizontally(int direction);
     void move_down();
     void draw(sf::RenderTarget& target, sf::RenderStates state) const override;
     void rotate_clockwise(); //char direction
