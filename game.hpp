@@ -13,7 +13,6 @@ public:
   Game();
   void start();
   void update();
-  // void pause();
   // void end();
   // void increase_speed();
   void event_handling();
