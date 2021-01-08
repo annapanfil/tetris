@@ -8,17 +8,6 @@ using std::endl;
 
 Piece::Piece(int x, int y, Board* board):Shape(x,y, board){
   this -> shape = random_shape();
-
-  for(int row=0; row<2; row++){
-    for(int col=0; col<3; col++){
-      if (shape[row][col] == 1){
-        sf::RectangleShape* rectangle = new sf::RectangleShape(sf::Vector2f(board->get_pixel(), board->get_pixel()));
-        rectangle -> sf::Transformable::setPosition(x+(col-1)*board->get_pixel(), y+row*board->get_pixel());
-        rectangle -> sf::Shape::setFillColor(sf::Color::Green);
-        this -> visual.push_back(rectangle);
-      }
-    }
-  }
 }
 
 
@@ -38,10 +27,16 @@ vector<vector<bool>> Piece::random_shape(){
 
 
 void Piece::draw(sf::RenderTarget& target, sf::RenderStates state) const{
-  //TODO: update visual based on shape
-
-  for (auto square: this->visual)
-    target.draw(*square);
+  for(int row=0; row<shape.size(); row++){
+    for(int col=0; col<shape[row].size(); col++){
+      if (shape[row][col] == 1){
+        sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(board->get_pixel(), board->get_pixel()));
+        rectangle.sf::Transformable::setPosition(this->position[0]+col*board->get_pixel(), this->position[1]+row*board->get_pixel());
+        rectangle.sf::Shape::setFillColor(sf::Color::Green);
+        target.draw(rectangle);
+      }
+    }
+  }
 }
 
 void Piece::move(int dx, int dy){
@@ -49,12 +44,7 @@ void Piece::move(int dx, int dy){
   dy *= board->get_pixel();
   this -> position[0] += dx;
   this -> position[1] += dy;
-  if (!(this -> wall_collision())){
-    for (auto square: this->visual)
-      square -> sf::Transformable::move(dx, dy);
-  }
-  else{ //cofnij
-    std::cout<<this->position[0]<<std::endl;
+  if (this -> wall_collision()){ //cofnij
     this -> position[0] -= dx;
     this -> position[1] -= dy;
   }
@@ -69,7 +59,8 @@ void Piece::move_horizontally(int direction){
 }
 
 bool Piece::wall_collision(){
-  if (get_bottom()>=board->get_heigth() || get_left()<=0 || get_right()>=board->get_width()){
+
+  if (get_bottom(shape.size())>board->get_heigth() || get_left()<0 || get_right(shape[0].size())>board->get_width()){
     return true;
   }
   else{
@@ -78,7 +69,7 @@ bool Piece::wall_collision(){
 }
 
 void Piece::rotate_clockwise(){
-  cout<<"rotate_clockwise\n";
+  // cout<<"rotate_clockwise\n";
   vector<vector<bool>> rotated_shape(shape[0].size(), vector<bool>());
 
   //transpose
@@ -94,7 +85,7 @@ void Piece::rotate_clockwise(){
 }
 
 void Piece::rotate_counterclockwise(){
-  cout<<"rotate_counterclockwise\n";
+  // cout<<"rotate_counterclockwise\n";
   vector<vector<bool>> rotated_shape(shape[0].size(), vector<bool>());
 
   //mirror vertically
@@ -105,6 +96,11 @@ void Piece::rotate_counterclockwise(){
   for (int i = 0; i<shape.size(); i++)
     for (int j=0; j<shape[i].size(); j++)
       rotated_shape[j].push_back(shape[i][j]);
+
+  // for (int i = 0; i<shape.size(); i++)
+  //   {for (int j=0; j<shape[i].size(); j++)
+  //     cout<<shape[i][j]<<" ";
+  //   cout<<endl;}
 
   this -> shape = rotated_shape;
 

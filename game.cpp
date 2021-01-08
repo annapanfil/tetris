@@ -1,11 +1,14 @@
 #include "game.hpp"
+#include <cmath>
+
 
 Game::Game(){
   const int PIXEL = 20;
   this -> window = new sf::RenderWindow (sf::VideoMode(400,600), "Tetris", sf::Style::Close | sf::Style::Titlebar); //TODO: from board dimensions //sf::Style::Close || sf::Style::Titlebar
   // this -> window -> setFramerateLimit(5);
   this -> board = new Board (400, 600, PIXEL);
-  this -> piece = new Piece((400-PIXEL)/2,0, this->board);
+  // this -> piece = new Piece(floor(((400-PIXEL)/2)/20)*20,0, this->board);
+  this -> piece = new Piece(40,0, this->board);
 }
 
 void Game::event_handling(){
