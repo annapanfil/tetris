@@ -8,7 +8,6 @@ class Piece: public Shape, public sf::Drawable{
     void move(int dx, int dy);
 public:
     ~Piece() {std::cout << "destructor" << '\n';}
-    vector<sf::RectangleShape*> visual;
     Piece(int x, int y, Board* Board);
     bool wall_collision();
     // bool stack_collision(Stack stack);

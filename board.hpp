@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+
 class Board{
   int size[2];
   int pixel;
