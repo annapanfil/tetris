@@ -7,6 +7,7 @@ Game::Game(){
   this -> window = new sf::RenderWindow (sf::VideoMode(400,600), "Tetris", sf::Style::Close | sf::Style::Titlebar); //TODO: from board dimensions //sf::Style::Close || sf::Style::Titlebar
   this -> board = new Board (400, 600, PIXEL);
   this -> piece = new Piece(floor(((400-PIXEL)/2)/20)*20,0, this->board);
+  this -> stack = new Stack(this->board);
 }
 
 void Game::event_handling(){
@@ -28,7 +29,7 @@ void Game::event_handling(){
         else if (event.key.code == sf::Keyboard::Down)
           piece->move_down();
         else if (event.key.code == sf::Keyboard::P || event.key.code == sf::Keyboard::Escape)
-          this->paused = true;
+          paused = true;
           break;
     }
   }
@@ -48,10 +49,16 @@ void Game::event_handling(){
     //   std::cout<<event.size.width;
   }
 
-void Game::update(){
-  piece->move_down();
+void Game::finish(){
+
 }
 
+void Game::update(){
+  piece->move_down();
+  stack->check_collision(piece);
+  if (stack->get_border() <=0 )
+    finish();
+}
 
 void Game::start(){
   sf::Clock game_clock;
@@ -61,11 +68,12 @@ void Game::start(){
   window -> clear(); //można podać kolor
   //game loop
   while (window->isOpen()){
-    if (!this->paused){
+    if (!paused){
     while (game_clock.getElapsedTime() < sf::seconds(fall_time)){
       event_handling();
       window -> clear(); //można podać kolor
       window -> draw(*piece);
+      window -> draw(*stack);
       window -> display();
     }
     update();
@@ -82,7 +90,7 @@ void Game::start(){
             window -> close(); break;
           case sf::Event::KeyPressed:
             if (event.key.code == sf::Keyboard::P || event.key.code == sf::Keyboard::Escape){
-              this->paused = false;
+              paused = false;
             }
         }
       }

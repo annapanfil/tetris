@@ -3,9 +3,10 @@
 #include "piece.hpp"
 
 class Stack: public Shape{
+  int heigth;
 public:
-  void check() override;
-  bool remove_full_lines();
-  bool check_gameover();
-  void add(Piece piece);
+  Stack(Board* board);
+  bool check_collision(Piece* piece); //TODO
+  void add(Piece* piece); //TODO
+  int get_border(){return board->get_heigth() - heigth;}
 };

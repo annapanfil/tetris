@@ -3,11 +3,13 @@
 #include <iostream>
 
 #include "piece.hpp"
+
 using std::cout;
 using std::endl;
 
 Piece::Piece(int x, int y, Board* board):Shape(x,y, board){
   this -> shape = random_shape();
+  this -> color = sf::Color::Green;
 }
 
 
@@ -23,20 +25,6 @@ vector<vector<bool>> Piece::random_shape(){
       shape[1].insert(shape[1].end(),{0,0,1}); break;
     }
     return shape;
-}
-
-
-void Piece::draw(sf::RenderTarget& target, sf::RenderStates state) const{
-  for(int row=0; row<shape.size(); row++){
-    for(int col=0; col<shape[row].size(); col++){
-      if (shape[row][col] == 1){
-        sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(board->get_pixel(), board->get_pixel()));
-        rectangle.sf::Transformable::setPosition(this->position[0]+col*board->get_pixel(), this->position[1]+row*board->get_pixel());
-        rectangle.sf::Shape::setFillColor(sf::Color::Green);
-        target.draw(rectangle);
-      }
-    }
-  }
 }
 
 void Piece::move(int dx, int dy){
@@ -60,7 +48,7 @@ void Piece::move_horizontally(int direction){
 
 bool Piece::wall_collision(){
 
-  if (get_bottom(shape.size())>board->get_heigth() || get_left()<0 || get_right(shape[0].size())>board->get_width()){
+  if (get_bottom()>board->get_heigth() || get_left()<0 || get_right()>board->get_width()){
     return true;
   }
   else{
