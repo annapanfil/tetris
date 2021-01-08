@@ -5,10 +5,8 @@
 Game::Game(){
   const int PIXEL = 20;
   this -> window = new sf::RenderWindow (sf::VideoMode(400,600), "Tetris", sf::Style::Close | sf::Style::Titlebar); //TODO: from board dimensions //sf::Style::Close || sf::Style::Titlebar
-  // this -> window -> setFramerateLimit(5);
   this -> board = new Board (400, 600, PIXEL);
-  // this -> piece = new Piece(floor(((400-PIXEL)/2)/20)*20,0, this->board);
-  this -> piece = new Piece(40,0, this->board);
+  this -> piece = new Piece(floor(((400-PIXEL)/2)/20)*20,0, this->board);
 }
 
 void Game::event_handling(){
@@ -29,7 +27,9 @@ void Game::event_handling(){
           piece->rotate_counterclockwise();
         else if (event.key.code == sf::Keyboard::Down)
           piece->move_down();
-        break;
+        else if (event.key.code == sf::Keyboard::P || event.key.code == sf::Keyboard::Escape)
+          this->paused = true;
+          break;
     }
   }
   // }
@@ -61,6 +61,7 @@ void Game::start(){
   window -> clear(); //można podać kolor
   //game loop
   while (window->isOpen()){
+    if (!this->paused){
     while (game_clock.getElapsedTime() < sf::seconds(fall_time)){
       event_handling();
       window -> clear(); //można podać kolor
@@ -69,5 +70,22 @@ void Game::start(){
     }
     update();
     game_clock.restart();
+    }
+    else{
+      // std::cout<<"paused"<<std::endl;
+      sf::Event event;
+      while (window -> pollEvent(event)){
+        //process events
+        std::cout<<"paused"<<std::endl; //żeby się 2h nie zastanawiać
+        switch(event.type){
+          case sf::Event::Closed:
+            window -> close(); break;
+          case sf::Event::KeyPressed:
+            if (event.key.code == sf::Keyboard::P || event.key.code == sf::Keyboard::Escape){
+              this->paused = false;
+            }
+        }
+      }
+    }
   }
 }

@@ -4,8 +4,6 @@
 class Board{
   int size[2];
   int pixel;
-  // Piece curr_piece;
-  // Piece next_piece;
 public:
   Board(int x, int y, int pixel);
   void show();
