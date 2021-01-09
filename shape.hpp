@@ -12,6 +12,6 @@ protected:
   Board* board;
   Shape(int x, int y, Board* board);
 public:
-  vector<vector<bool>> shape; //potrzebne tylko w Stack::add(). Jak to zrobić ładniej?
-  void draw(sf::RenderTarget& target, sf::RenderStates state) const override;
+  vector<vector<bool>> shape; //potrzebne publicznie tylko w Stack::add(). Jak to zrobić ładniej?
+  virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const=0;
 };

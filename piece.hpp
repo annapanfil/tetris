@@ -17,4 +17,5 @@ public:
     int get_left(){return position[0];}
     int get_bottom(){return position[1]+(shape.size()*board->get_pixel());}
     int get_right(){return position[0]+(shape[0].size()*board->get_pixel());}
+    void draw(sf::RenderTarget& target, sf::RenderStates state) const override;
 };
