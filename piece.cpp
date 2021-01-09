@@ -1,13 +1,15 @@
 #include <stdlib.h>
 #include <time.h>
 #include <iostream>
+#include <cmath>
 
 #include "piece.hpp"
+#define PIXEL board->get_pixel()
 
 using std::cout;
 using std::endl;
 
-Piece::Piece(int x, int y, Board* board):Shape(x,y, board){
+Piece::Piece(Board* board):Shape(floor((400-PIXEL)/(2*PIXEL))*PIXEL,0,  board){
   this -> shape = random_shape();
   this -> color = sf::Color::Green;
 }
@@ -28,8 +30,8 @@ vector<vector<bool>> Piece::random_shape(){
 }
 
 void Piece::move(int dx, int dy){
-  dx *= board->get_pixel();
-  dy *= board->get_pixel();
+  dx *= PIXEL;
+  dy *= PIXEL;
   this -> position[0] += dx;
   this -> position[1] += dy;
   if (this -> wall_collision()){ //cofnij
@@ -48,7 +50,7 @@ void Piece::move_horizontally(int direction){
 
 bool Piece::wall_collision(){
 
-  if (get_bottom()>board->get_heigth() || get_left()<0 || get_right()>board->get_width()){
+  if (get_left()<0 || get_right()>board->get_width() || get_bottom()>board->get_heigth()){
     return true;
   }
   else{

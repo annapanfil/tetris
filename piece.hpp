@@ -7,7 +7,7 @@ class Piece: public Shape{
     void move(int dx, int dy);
 public:
     ~Piece() {std::cout << "destructor" << '\n';}
-    Piece(int x, int y, Board* board);
+    Piece(Board* board);
     bool wall_collision();
     void move_horizontally(int direction);
     void move_down();

@@ -1,12 +1,10 @@
 #include "game.hpp"
-#include <cmath>
-
 
 Game::Game(){
   const int PIXEL = 20;
   this -> window = new sf::RenderWindow (sf::VideoMode(400,600), "Tetris", sf::Style::Close | sf::Style::Titlebar); //TODO: from board dimensions //sf::Style::Close || sf::Style::Titlebar
   this -> board = new Board (400, 600, PIXEL);
-  this -> piece = new Piece(floor(((400-PIXEL)/2)/20)*20,0, this->board);
+  this -> piece = new Piece(this->board);
   this -> stack = new Stack(this->board);
 }
 
@@ -55,7 +53,10 @@ void Game::finish(){
 
 void Game::update(){
   piece->move_down();
-  stack->check_collision(piece);
+  if (stack->check_collision(piece)){
+      delete this->piece;
+      this->piece = new Piece(this->board);
+  }
   if (stack->get_border() <=0 )
     finish();
 }
