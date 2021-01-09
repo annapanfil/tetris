@@ -7,11 +7,11 @@ using std::vector;
 
 class Shape: public sf::Drawable{
 protected:
-  vector<vector<bool>> shape;
   sf::Color color;
   int position[2]; //left top in piece, right bottom in stack
   Board* board;
   Shape(int x, int y, Board* board);
 public:
+  vector<vector<bool>> shape; //potrzebne tylko w Stack::add(). Jak to zrobić ładniej?
   void draw(sf::RenderTarget& target, sf::RenderStates state) const override;
 };
