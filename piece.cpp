@@ -14,6 +14,18 @@ Piece::Piece(Board* board):Shape(floor((400-PIXEL)/(2*PIXEL))*PIXEL,0,  board){
   this -> color = sf::Color::Green;
 }
 
+void Piece::draw(sf::RenderTarget& target, sf::RenderStates state) const{
+  for(int row=0; row<shape.size(); row++){
+    for(int col=0; col<shape[row].size(); col++){
+      if (shape[row][col] == 1){
+        sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(board->get_pixel(), board->get_pixel()));
+        rectangle.sf::Transformable::setPosition(this->position[0]+col*board->get_pixel(), this->position[1]+row*board->get_pixel());
+        rectangle.sf::Shape::setFillColor(this->color);
+        target.draw(rectangle);
+      }
+    }
+  }
+}
 
 vector<vector<bool>> Piece::random_shape(){
     srand (time(NULL));
@@ -50,7 +62,7 @@ void Piece::move_horizontally(int direction){
 
 bool Piece::wall_collision(){
 
-  if (get_left()<0 || get_right()>board->get_width() || get_bottom()>board->get_heigth()){
+  if (get_left()<0 || get_right()>board->get_width()){
     return true;
   }
   else{

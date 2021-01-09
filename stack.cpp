@@ -1,9 +1,24 @@
 #include "stack.hpp"
 
-Stack::Stack(Board* board):Shape(board->get_heigth(), board->get_width(), board){
+#define PIXEL board->get_pixel()
+
+Stack::Stack(Board* board):Shape(board->get_width(), board->get_heigth(), board){
   this -> color = sf::Color::Red;
   this -> heigth = 0;
-  this -> width = board->get_width()/board->get_pixel();
+  this -> width = board->get_width()/PIXEL;
+}
+
+void Stack::draw(sf::RenderTarget& target, sf::RenderStates state) const{
+  for(int row=shape.size()-1; row>=0; row--){
+    for(int col=0; col<shape[row].size(); col++){
+      if (shape[row][col] == 1){
+        sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(PIXEL, PIXEL));
+        rectangle.sf::Transformable::setPosition(col*PIXEL, position[1]-(row+1)*PIXEL);
+        rectangle.sf::Shape::setFillColor(this->color);
+        target.draw(rectangle);
+      }
+    }
+  }
 }
 
 void Stack::add(Piece* piece, int field){
@@ -40,8 +55,8 @@ void Stack::remove_full_lines(){
 
 bool Stack::check_collision(Piece* piece){
   if(piece->get_bottom() >= get_border()){
-    int field = piece->get_left()/board->get_pixel();
-    if (this->heigth == 0 || this->shape.back()[field] == 1){ //TODO: albo następne pola klocka
+    int field = piece->get_left()/PIXEL;
+    if (piece->get_bottom()>board->get_heigth() || this->shape.back()[field] == 1){ //TODO: albo następne pola klocka
       std::cout<<"stack_collision "<< this-> heigth<<std::endl;
       this -> add(piece, field);
       this -> remove_full_lines();
