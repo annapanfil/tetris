@@ -13,6 +13,8 @@ class Game{
   bool paused = false;
 public:
   Game();
+  void introduce();
+  void display_text(sf::Font*, std::string);
   void start();
   void update();
   void finish(); //TODO

@@ -7,10 +7,11 @@ class Stack: public Shape{
 public:
   int heigth;
   Stack(Board* board);
-  bool check_collision(Piece* piece); //TODO
+  bool check_collision(Piece* piece); //TODO: check stack collision horizontally
+  bool check_collision_horizontally(Piece* piece, int direction);
   bool check_whole_piece(Piece* piece);
-  void add(Piece* piece); //TODO
+  void add(Piece* piece);
   int get_border() const {return board->get_heigth() - this->heigth*board->get_pixel();}
-  void remove_full_lines(); //TODO
+  void remove_full_lines();
   void draw(sf::RenderTarget& target, sf::RenderStates state) const override;
 };
