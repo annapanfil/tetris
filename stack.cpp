@@ -21,28 +21,40 @@ void Stack::draw(sf::RenderTarget& target, sf::RenderStates state) const{
   }
 }
 
-void Stack::add(Piece* piece, int field){
- std::cout<<"add\n";
- for (int row=piece->shape.size()-1; row>=0; row--){
-   std::vector<bool> new_line(width, 0);
-   std::cout<<std::endl;
-   for (int col=0; col<piece->shape[row].size(); col++){
-     // std::cout<<row<<" "<<col<<std::endl;
-     if(piece->shape[row][col]==1){
-       // std::cout<<"here\n";
-       new_line[field+col] = 1;
-     }
-   }
-   this->shape.push_back(new_line);
-   this->heigth ++;
- }
- std::cout<<"size: "<<shape.size()<<" "<<shape[0].size()<<" heigth: "<<heigth<<std::endl;
- for (int i = shape.size()-1; i>=0; i--)
- {for (int j=0; j<shape[i].size(); j++){
-   // std::cout<<i<<" "<<j<<std::endl;
-   std::cout<<shape[i][j]<<" ";
- }
-    std::cout<<std::endl;}
+void Stack::add(Piece* piece){
+  std::cout<<"add\n";
+  int fields_from_left = piece->get_left()/PIXEL;
+  int stack_line = (board->get_heigth() - piece->get_bottom())/PIXEL;
+  if (stack_line<0) stack_line = 0;
+  std::cout<<"line "<<stack_line<<"board "<<board->get_heigth()<<"piece "<<piece->get_bottom()<<"pixel "<<PIXEL<<std::endl;
+  for (int row=piece->shape.size()-1; row>=0; row--){    //each line of piece
+    std::cout<<"here\n";
+    if(stack_line > heigth-1){  //new stack line
+
+      std::cout<<"add new line\n";
+      std::vector<bool> new_line(width, 0);
+      this->shape.push_back(new_line);
+      this->heigth ++;
+    }
+    std::cout<<"there\n";
+    for (int col=0; col<piece->shape[row].size(); col++){  //
+      if (piece->shape[row][col]==1){
+        std::cout<<"add to stack\n";
+        shape[stack_line][col+fields_from_left] = 1;
+      }
+    }
+    // std::cout<<row<<" "<<col<<std::endl;
+    stack_line++;
+    std::cout<<"end\n";
+  }
+  std::cout<<"size: "<<shape.size()<<" "<<shape[0].size()<<" heigth: "<<heigth<<std::endl;
+  for (int i = shape.size()-1; i>=0; i--){
+    for (int j=0; j<shape[i].size(); j++){
+      // std::cout<<i<<" "<<j<<std::endl;
+      std::cout<<shape[i][j]<<" ";
+    }
+    std::cout<<std::endl;
+  }
 }
 
 
@@ -50,9 +62,57 @@ void Stack::remove_full_lines(){
 
 }
 
-// bool Stack::check
+bool Stack::check_whole_piece(Piece* piece){
+  if (piece->get_bottom() >= get_border()){ //stack is here
+    std::cout<<"check\n";
+    int fields_from_left = piece->get_left()/PIXEL;
+    for (int col=0; col<piece->shape[0].size(); col++){
+      if (piece->shape.back()[col]==1){
+        // std::cout<<"check\n";
+        int stack_line = (board->get_heigth() - piece->get_bottom())/PIXEL - 1;
+        if (this->shape[stack_line][fields_from_left + col] == 1)
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+bool Stack::check_collision(Piece* piece){
+  if(piece->get_bottom() >= board->get_heigth() || check_whole_piece(piece)){
+    std::cout<<"stack_collision "<< this-> heigth<<std::endl;
+    this -> add(piece);
+    this -> remove_full_lines();
+    return true;
+  }
+  else{
+    std::cout<<"not stack_collision "<< this-> heigth<<std::endl;
+    return false;
+  }
+}
 
 
+
+
+  /*if(piece->get_bottom() >= board->get_heigth() || piece->get_bottom() >= get_border()){ //stos już tu jest
+      //trafiamy w dół planszy                      pod klockiem jest pole 1 stosu
+    if (check_whole_piece(piece)){
+      std::cout<<"stack_collision "<< this-> heigth<<std::endl;
+      this -> add(piece);
+      this -> remove_full_lines();
+      return true;
+    }
+    else{
+      std::cout<<"not stack_collision "<< this-> heigth<<std::endl;
+      return false;
+    }
+  }
+}*/
+
+
+
+
+/*
 bool Stack::check_collision(Piece* piece){
   if(piece->get_bottom() >= get_border()){
     int field = piece->get_left()/PIXEL;
@@ -67,4 +127,4 @@ bool Stack::check_collision(Piece* piece){
       return false;
     }
   }
-}
+}*/
