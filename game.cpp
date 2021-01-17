@@ -29,6 +29,7 @@ void Game::event_handling(){
         else if (event.key.code == sf::Keyboard::P || event.key.code == sf::Keyboard::Escape)
           paused = true;
           break;
+        default: break;
     }
   }
   // }
@@ -93,6 +94,7 @@ void Game::start(){
             if (event.key.code == sf::Keyboard::P || event.key.code == sf::Keyboard::Escape){
               paused = false;
             }
+          default: break;
         }
       }
     }
