@@ -98,19 +98,19 @@ bool Stack::check_collision(Piece* piece){
 bool Stack::check_collision_horizontally(Piece* piece, int direction){
   std::cout<<"check horizontally\n";
   int fields_from_left = piece->get_left()/PIXEL;
-  int stack_line = (board->get_heigth() - piece->get_bottom())/PIXEL - 1;
+  int stack_line = (board->get_heigth() - piece->get_bottom())/PIXEL;
   for (int row=piece->shape.size()-1; row>=0; row--){    //each line of piece
     std::cout<<"check if stack\n";
     if (stack_line < heigth){ //stack is here
-      std::cout<<"check if pieces " <<row<<std::endl;
+      // std::cout<<"check if pieces " <<row<<std::endl;
       if (piece->shape[row][0]==1){
-        std::cout<<"check stack"<<stack_line <<fields_from_left<<std::endl;
+        std::cout<<"check stack "<<row<<" "<<stack_line<<" "<<fields_from_left<<std::endl;
         if (this->shape[stack_line][fields_from_left] == 1) //is there stack field below piece field?
           return true;
       }
     }
   stack_line++;
-  std::cout<<"end\n";
+  // std::cout<<"end\n";
   }
   return false;
 }

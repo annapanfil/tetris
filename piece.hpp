@@ -2,14 +2,16 @@
 #include "shape.hpp"
 #include <iostream>
 
+class Stack;
+
 class Piece: public Shape{
     vector<vector<bool>> random_shape();
-    void move(int dx, int dy);
+    void move(int dx, int dy, Stack* stack);
 public:
     ~Piece() {std::cout << "destructor" << '\n';}
     Piece(Board* board);
     bool wall_collision();
-    void move_horizontally(int direction);
+    void move_horizontally(int direction, Stack* stack);
     void move_down();
     void rotate_clockwise();
     void rotate_counterclockwise();
