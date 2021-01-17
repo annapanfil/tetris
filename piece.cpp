@@ -4,6 +4,8 @@
 #include <cmath>
 
 #include "piece.hpp"
+#include "stack.hpp"
+
 #define PIXEL board->get_pixel()
 
 using std::cout;
@@ -43,14 +45,17 @@ vector<vector<bool>> Piece::random_shape(){
     return shape;
 }
 
-void Piece::move(int dx, int dy){
+void Piece::move(int dx, int dy, Stack* stack = nullptr){
   dx *= PIXEL;
   dy *= PIXEL;
   this -> position[0] += dx;
   this -> position[1] += dy;
-  if (this -> wall_collision()){ //cofnij
-    this -> position[0] -= dx;
+  if (this -> wall_collision()){
+    this -> position[0] -= dx; //cofnij
     this -> position[1] -= dy;
+  }
+  else if(stack != nullptr && stack->check_collision_horizontally(this, dx)){
+    this -> position[0] -= dx;
   }
 }
 
@@ -58,8 +63,8 @@ void Piece::move_down(){
   this -> move(0, 1);
 }
 
-void Piece::move_horizontally(int direction){
-    this -> move(direction, 0);
+void Piece::move_horizontally(int direction, Stack* stack){
+    this -> move(direction, 0, stack);
 }
 
 bool Piece::wall_collision(){
