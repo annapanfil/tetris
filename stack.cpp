@@ -25,7 +25,7 @@ void Stack::add(Piece* piece){
   std::cout<<"add\n";
   int fields_from_left = piece->get_left()/PIXEL;
   int stack_line = (board->get_heigth() - piece->get_bottom())/PIXEL;
-  if (stack_line<0) stack_line = 0;
+  if (stack_line<0) stack_line = 0; //TODO: ograniczyć gdzie indziej
   std::cout<<"line "<<stack_line<<"board "<<board->get_heigth()<<"piece "<<piece->get_bottom()<<"pixel "<<PIXEL<<std::endl;
   for (int row=piece->shape.size()-1; row>=0; row--){    //each line of piece
     std::cout<<"here\n";
@@ -37,7 +37,7 @@ void Stack::add(Piece* piece){
       this->heigth ++;
     }
     std::cout<<"there\n";
-    for (int col=0; col<piece->shape[row].size(); col++){  //
+    for (int col=0; col<piece->shape[row].size(); col++){  //add line of piece to stack
       if (piece->shape[row][col]==1){
         std::cout<<"add to stack\n";
         shape[stack_line][col+fields_from_left] = 1;
@@ -62,18 +62,22 @@ void Stack::remove_full_lines(){
 
 }
 
+
 bool Stack::check_whole_piece(Piece* piece){
-  if (piece->get_bottom() >= get_border()){ //stack is here
     std::cout<<"check\n";
     int fields_from_left = piece->get_left()/PIXEL;
-    for (int col=0; col<piece->shape[0].size(); col++){
-      if (piece->shape.back()[col]==1){
-        // std::cout<<"check\n";
-        int stack_line = (board->get_heigth() - piece->get_bottom())/PIXEL - 1;
-        if (this->shape[stack_line][fields_from_left + col] == 1)
-        return true;
+    int stack_line = (board->get_heigth() - piece->get_bottom())/PIXEL - 1;
+    for (int row=piece->shape.size()-1; row>=0; row--){    //each line of piece
+      if (stack_line < heigth){ //stack is here
+      for (int col=0; col<piece->shape[row].size(); col++){
+        if (piece->shape[row][col]==1){
+          std::cout<<"check stack\n";
+          if (this->shape[stack_line][fields_from_left + col] == 1)
+            return true;
+        }
       }
     }
+    stack_line++;
   }
   return false;
 }
