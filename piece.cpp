@@ -33,11 +33,13 @@ vector<vector<bool>> Piece::random_shape(){
     vector<vector<bool>> shape = {{},{}};
 
     switch(choice){
-
     case 0: //L
       shape[0].insert(shape[0].end(),{1,1,1});
       shape[1].insert(shape[1].end(),{0,0,1}); break;
+    case 1: //I
+      shape[0].insert(shape[0].end(),{1,1,1,1}); break;
     }
+
     return shape;
 }
 
@@ -62,7 +64,7 @@ void Piece::move_horizontally(int direction){
 
 bool Piece::wall_collision(){
 
-  if (get_left()<0 || get_right()>board->get_width()){
+  if (get_left()<0 || get_right()>board->get_width() || get_bottom() > board->get_heigth()){
     return true;
   }
   else{

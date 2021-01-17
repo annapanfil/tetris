@@ -8,45 +8,24 @@ Game::Game(){
   this -> stack = new Stack(this->board);
 }
 
-void Game::event_handling(){
-  sf::Event event;
-  while (window -> pollEvent(event)){
-    //process events
-    switch(event.type){
-      case sf::Event::Closed:
-        window -> close(); break;
-      case sf::Event::KeyPressed:
-        if (event.key.code == sf::Keyboard::Left)
-          piece->move_horizontally(-1);
-        else if (event.key.code == sf::Keyboard::Right)
-          piece->move_horizontally(1);
-        else if (event.key.code == sf::Keyboard::X || event.key.code == sf::Keyboard::Up)
-          piece->rotate_clockwise();
-        else if (event.key.code == sf::Keyboard::Z)
-          piece->rotate_counterclockwise();
-        else if (event.key.code == sf::Keyboard::Down)
-          piece->move_down();
-        else if (event.key.code == sf::Keyboard::P || event.key.code == sf::Keyboard::Escape)
-          paused = true;
-          break;
-        default: break;
-    }
-  }
-  // }
-  // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-  // {
-  //   piece->move_horizontally(-1);
-  //   sf::sleep(sf::milliseconds(1000/10));
-  // }
-  // else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-  // {
-  //   piece->move_horizontally(1);
-  //   sf::sleep(sf::milliseconds(1000/10));
-  // }
+void Game::display_text(sf::Font* font, std::string msg){
+  sf::Text text;
+  text.setFont(*font);
+  text.setString(msg);
+  window -> clear();
+  window -> draw(text);
+  window -> display();
+}
 
-    // case sf::Event::Resized:
-    //   std::cout<<event.size.width;
+void Game::introduce(){
+  sf::Font font;
+  if (!font.loadFromFile("graphics/font.ttf"))
+    std::cout<<"Font error";
+  for (int i=3; i>=0; i--){
+    display_text(&font, "Hello!\nGame starts in\n" + std::to_string(i));
+    sf::sleep(sf::seconds(1));
   }
+}
 
 void Game::finish(){
 
@@ -62,10 +41,44 @@ void Game::update(){
     finish();
 }
 
+void Game::event_handling(){
+  sf::Event event;
+  while (window -> pollEvent(event)){
+    //process events
+    switch(event.type){
+      case sf::Event::Closed:
+        window -> close(); break;
+      case sf::Event::KeyPressed:
+        if (event.key.code == sf::Keyboard::Left){
+          std::cout<<"LEFT\n";
+          piece->move_horizontally(-1);
+          if(stack->check_collision_horizontally(piece, -1))
+            piece->move_horizontally(1);
+          // else
+          //   std::cout<<"NOT COLLISION\n";
+        }//TODO: check stack collision
+        else if (event.key.code == sf::Keyboard::Right)
+          piece->move_horizontally(1);
+          //TODO: check stack collision;
+        else if (event.key.code == sf::Keyboard::X || event.key.code == sf::Keyboard::Up)
+          piece->rotate_clockwise();
+        else if (event.key.code == sf::Keyboard::Z)
+          piece->rotate_counterclockwise();
+        else if (event.key.code == sf::Keyboard::Down)
+          update();
+        else if (event.key.code == sf::Keyboard::P || event.key.code == sf::Keyboard::Escape)
+          paused = true;
+          break;
+        default: break;
+    }
+  }
+}
+
 void Game::start(){
   sf::Clock game_clock;
   sf::Clock key_clock;
   int fall_time = 1.5;
+  // introduce();
 
   window -> clear(); //można podać kolor
   //game loop
@@ -73,7 +86,7 @@ void Game::start(){
     if (!paused){
     while (game_clock.getElapsedTime() < sf::seconds(fall_time)){
       event_handling();
-      window -> clear(); //można podać kolor
+      window -> clear();
       window -> draw(*piece);
       window -> draw(*stack);
       window -> display();
