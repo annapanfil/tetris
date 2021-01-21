@@ -50,15 +50,11 @@ void Game::event_handling(){
         window -> close(); break;
       case sf::Event::KeyPressed:
         if (event.key.code == sf::Keyboard::Left){
-          std::cout<<"LEFT\n";
           piece->move_horizontally(-1, stack);
-          
-          // else
-          //   std::cout<<"NOT COLLISION\n";
-        }//TODO: check stack collision
-        else if (event.key.code == sf::Keyboard::Right)
+        }
+        else if (event.key.code == sf::Keyboard::Right){
           piece->move_horizontally(1, stack);
-          //TODO: check stack collision;
+        }
         else if (event.key.code == sf::Keyboard::X || event.key.code == sf::Keyboard::Up)
           piece->rotate_clockwise();
         else if (event.key.code == sf::Keyboard::Z)
