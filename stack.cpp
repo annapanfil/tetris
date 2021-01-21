@@ -57,9 +57,23 @@ void Stack::add(Piece* piece){
   }
 }
 
+bool full_line(std::vector<bool> line){
+  for (bool field : line){
+    if (field == 0){
+      return 0;
+    }
+  }
+  return 1;
+}
 
 void Stack::remove_full_lines(){
-
+  for (std::vector<std::vector<bool>>::iterator line=shape.begin(); line != shape.end(); line++){
+    if(full_line(*line)){
+      std::cout << "full line" << '\n';
+      shape.erase(line);
+      heigth--;
+    }
+  }
 }
 
 
