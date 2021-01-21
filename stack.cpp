@@ -64,7 +64,7 @@ void Stack::remove_full_lines(){
 
 
 bool Stack::check_whole_piece(Piece* piece){
-    std::cout<<"check\n";
+    // std::cout<<"check\n";
     int fields_from_left = piece->get_left()/PIXEL;
     int stack_line = (board->get_heigth() - piece->get_bottom())/PIXEL - 1;
     for (int row=piece->shape.size()-1; row>=0; row--){    //each line of piece
@@ -96,21 +96,18 @@ bool Stack::check_collision(Piece* piece){
 }
 
 bool Stack::check_collision_horizontally(Piece* piece, int direction){
-  std::cout<<"check horizontally\n";
-  int fields_from_left = piece->get_left()/PIXEL;
+  // std::cout<<"check horizontally\n";
+  int fields_from_left = direction < 0 ? piece->get_left()/PIXEL : piece->get_right()/PIXEL-1;
   int stack_line = (board->get_heigth() - piece->get_bottom())/PIXEL;
   for (int row=piece->shape.size()-1; row>=0; row--){    //each line of piece
-    std::cout<<"check if stack\n";
     if (stack_line < heigth){ //stack is here
-      // std::cout<<"check if pieces " <<row<<std::endl;
-      if (piece->shape[row][0]==1){
-        std::cout<<"check stack "<<row<<" "<<stack_line<<" "<<fields_from_left<<std::endl;
+      int field_to_check = direction < 0 ? piece->shape[row][0] : piece->shape[row].back();
+      if (field_to_check == 1){
         if (this->shape[stack_line][fields_from_left] == 1) //is there stack field below piece field?
           return true;
       }
     }
   stack_line++;
-  // std::cout<<"end\n";
   }
   return false;
 }
