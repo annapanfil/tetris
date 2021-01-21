@@ -17,6 +17,7 @@ public:
   void display_text(sf::Font*, std::string);
   void start();
   void update();
+  void pause_menu(sf::RenderWindow*);
   void finish(); //TODO
   // void increase_speed();
   void event_handling();
