@@ -11,7 +11,7 @@
 using std::cout;
 using std::endl;
 
-Piece::Piece(Board* board):Shape(floor((400-PIXEL)/(2*PIXEL))*PIXEL,0,  board){
+Piece::Piece(Board* board):Shape(floor(((board->get_width())-PIXEL)/(2*PIXEL))*PIXEL,0,  board){
   this -> shape = random_shape();
   this -> color = sf::Color::Green;
 }
@@ -31,14 +31,29 @@ void Piece::draw(sf::RenderTarget& target, sf::RenderStates state) const{
 
 vector<vector<bool>> Piece::random_shape(){
     srand (time(NULL));
-    int choice = rand() % 1;
+    int choice = rand() % 6;    //TODO: I horizontal movement and bottom collision
     vector<vector<bool>> shape = {{},{}};
 
     switch(choice){
-    case 0: //L
+    case 6: //J
       shape[0].insert(shape[0].end(),{1,1,1});
       shape[1].insert(shape[1].end(),{0,0,1}); break;
-    case 1: //I
+    case 1: //T
+      shape[0].insert(shape[0].end(),{1,1,1});
+      shape[1].insert(shape[1].end(),{0,1,0}); break;
+    case 2: //O
+      shape[0].insert(shape[0].end(),{1,1});
+      shape[1].insert(shape[1].end(),{1,1}); break;
+    case 3: //L
+      shape[0].insert(shape[0].end(),{0,0,1});
+      shape[1].insert(shape[1].end(),{1,1,1}); break;
+    case 4: //S
+      shape[0].insert(shape[0].end(),{0,1,1});
+      shape[1].insert(shape[1].end(),{1,1,0}); break;
+    case 5: //Z
+      shape[0].insert(shape[0].end(),{1,1,0});
+      shape[1].insert(shape[1].end(),{0,1,1}); break;
+    case 6: //I
       shape[0].insert(shape[0].end(),{1,1,1,1}); break;
     }
 

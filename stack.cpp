@@ -80,13 +80,13 @@ bool Stack::check_whole_piece(Piece* piece){
 
 bool Stack::check_collision(Piece* piece){
   //TODO: very ugly solution. CHANGE IT!
-  if(piece->get_bottom() >= board->get_heigth()){   //hit the bottom
-    this -> add(piece, true);
+  if(check_whole_piece(piece)){   //hit the stack
+    this -> add(piece, false);
     this -> remove_full_lines();
     return true;
   }
-  else if(check_whole_piece(piece)){   //hit the stack
-    this -> add(piece, false);
+  else if(piece->get_bottom() >= board->get_heigth()){   //hit the bottom
+    this -> add(piece, true);
     this -> remove_full_lines();
     return true;
   }
