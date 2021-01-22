@@ -123,12 +123,10 @@ void Game::start(){
       }
     }
     catch(GameOver){
-      std::cout<<"caught\n";
       sf::Event event;
       while (window->isOpen()){
         window -> pollEvent(event);
         if(event.type == sf::Event::Closed){
-          std::cout<<"waiting\n";
           window -> close(); break;
         }
       }

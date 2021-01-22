@@ -8,8 +8,8 @@ class Game{
   Board* board;
   Piece* piece;
   Stack* stack;
-  int score = 0;
-  int speed;
+  // int score = 0;
+  // int speed;
   bool paused = false;
 public:
   Game();
@@ -21,5 +21,5 @@ public:
   void finish(); //TODO
   // void increase_speed();
   void event_handling();
-  void increment_score(int points=1){score += points;}
+  // void increment_score(int points=1){score += points;}
 };

@@ -2,8 +2,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-// #include "board.hpp"
-// #include "piece.hpp"
 
 #include "game.hpp"
 
