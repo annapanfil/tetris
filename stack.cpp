@@ -67,7 +67,7 @@ bool Stack::check_whole_piece(Piece* piece){
       if (stack_line < heigth){ //stack is here
       for (int col=0; col<piece->shape[row].size(); col++){
         if (piece->shape[row][col]==1){
-          if (this->shape[stack_line][fields_from_left + col] == 1) //is there stack field below piece field?
+          if (this->shape[stack_line][fields_from_left + col] == 1) //is there stack field here?
             return true;
         }
       }

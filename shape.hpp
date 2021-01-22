@@ -12,6 +12,6 @@ protected:
   Board* board;
   Shape(int x, int y, Board* board);
 public:
-  vector<vector<bool>> shape; //TODO: potrzebne publicznie tylko w Stack::add(). Jak to zrobić ładniej?
+  vector<vector<bool>> shape;
   virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const=0;
 };

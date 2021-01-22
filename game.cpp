@@ -46,7 +46,6 @@ void Game::update(){
       this->piece = new Piece(this->board);
   }
   if (stack->get_border() <= 20){
-    std::cout<<"game over\n";
     finish();
   }
 }
@@ -84,18 +83,23 @@ void Game::pause_menu(sf::RenderWindow* window){
   display_text("PAUSE\n");
   while (window -> pollEvent(event) && paused == true){
     //process events
-    std::cout<<"paused"<<std::endl; //żeby się 2h nie zastanawiać
     switch(event.type){
       case sf::Event::Closed:
         window -> close(); break;
       case sf::Event::KeyPressed:
         if (event.key.code == sf::Keyboard::P || event.key.code == sf::Keyboard::Escape){
           paused = false;
-          std::cout<<"unpause\n";
         }
       default: break;
     }
   }
+}
+
+void Game::display_all(){
+  window -> clear();
+  window -> draw(*piece);
+  window -> draw(*stack);
+  window -> display();
 }
 
 
@@ -103,19 +107,16 @@ void Game::start(){
   sf::Clock game_clock;
   sf::Clock key_clock;
   int fall_time = 500;
-  // introduce();
+  introduce();
 
-  window -> clear(); //można podać kolor
+  window -> clear();
   //game loop
   while (window->isOpen()){
     try{
       if (!paused){
       while (game_clock.getElapsedTime() < sf::milliseconds(fall_time)){
         event_handling();
-        window -> clear();
-        window -> draw(*piece);
-        window -> draw(*stack);
-        window -> display();
+        display_all();
       }
       update();
       game_clock.restart();
