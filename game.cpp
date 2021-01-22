@@ -4,37 +4,38 @@ class GameOver: public std::exception{};
 
 Game::Game(){
   const int PIXEL = 20;
-  this -> window = new sf::RenderWindow (sf::VideoMode(400,600), "Tetris", sf::Style::Close | sf::Style::Titlebar); //TODO: from board dimensions //sf::Style::Close || sf::Style::Titlebar
-  this -> board = new Board (400, 600, PIXEL);
+  this -> window = new sf::RenderWindow (sf::VideoMode(320,500), "Tetris", sf::Style::Close | sf::Style::Titlebar);
+  this -> board = new Board (320, 500, PIXEL);
   this -> piece = new Piece(this->board);
   this -> stack = new Stack(this->board);
   this -> paused = false;
 }
 
-void Game::display_text(sf::Font* font, std::string msg){
+void Game::display_text(std::string msg){
+  sf::Font font;
+  if (!font.loadFromFile("graphics/font.ttf"))
+    std::cout<<"Font error";
   sf::Text text;
-  text.setFont(*font);
+  text.setFont(font);
   text.setString(msg);
+  text.setCharacterSize(50);
+  text.setPosition(board->get_width()/2.0f, board->get_heigth()/2.0f);
+  text.setOrigin(text.getLocalBounds().width/2.0f,text.getLocalBounds().height/2.0f);
+
   window -> clear();
   window -> draw(text);
   window -> display();
 }
 
 void Game::introduce(){
-  sf::Font font;
-  if (!font.loadFromFile("graphics/font.ttf"))
-    std::cout<<"Font error";
   for (int i=3; i>=0; i--){
-    display_text(&font, "Hello!\nGame starts in\n" + std::to_string(i));
-    sf::sleep(sf::seconds(10));
+    display_text(std::to_string(i));
+    sf::sleep(sf::seconds(1));
   }
 }
 
 void Game::finish(){
-  sf::Font font;
-  if (!font.loadFromFile("graphics/font.ttf"))
-    std::cout<<"Font error";
-  display_text(&font, "GAME OVER\n");
+  display_text("GAME OVER\n");
   throw GameOver();
 }
 
@@ -80,6 +81,7 @@ void Game::event_handling(){
 
 void Game::pause_menu(sf::RenderWindow* window){
   sf::Event event;
+  display_text("PAUSE\n");
   while (window -> pollEvent(event) && paused == true){
     //process events
     std::cout<<"paused"<<std::endl; //żeby się 2h nie zastanawiać
@@ -100,7 +102,7 @@ void Game::pause_menu(sf::RenderWindow* window){
 void Game::start(){
   sf::Clock game_clock;
   sf::Clock key_clock;
-  int fall_time = 1.5;
+  int fall_time = 500;
   // introduce();
 
   window -> clear(); //można podać kolor
@@ -108,7 +110,7 @@ void Game::start(){
   while (window->isOpen()){
     try{
       if (!paused){
-      while (game_clock.getElapsedTime() < sf::seconds(fall_time)){
+      while (game_clock.getElapsedTime() < sf::milliseconds(fall_time)){
         event_handling();
         window -> clear();
         window -> draw(*piece);
