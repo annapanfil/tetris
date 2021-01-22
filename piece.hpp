@@ -8,7 +8,6 @@ class Piece: public Shape{
     vector<vector<bool>> random_shape();
     void move(int dx, int dy, Stack* stack);
 public:
-    ~Piece() {std::cout << "destructor" << '\n';}
     Piece(Board* board);
     bool wall_collision();
     void move_horizontally(int direction, Stack* stack);
