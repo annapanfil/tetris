@@ -10,7 +10,7 @@ class Piece: public Shape{
 public:
     Piece(Board* board);
     bool wall_collision();
-    void move_horizontally(int direction, Stack* stack);
+    void move_horizontally(int direction, Stack* stack);  //TODO: fix
     void move_down();
     void rotate_clockwise();
     void rotate_counterclockwise();

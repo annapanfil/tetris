@@ -1,5 +1,3 @@
-//kompilacja g++ *.cpp -lsfml-graphics -lsfml-window -lsfml-system
-
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 

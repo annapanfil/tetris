@@ -35,7 +35,7 @@ vector<vector<bool>> Piece::random_shape(){
     vector<vector<bool>> shape = {{},{}};
 
     switch(choice){
-    case 6: //J
+    case 0: //J
       shape[0].insert(shape[0].end(),{1,1,1});
       shape[1].insert(shape[1].end(),{0,0,1}); break;
     case 1: //T
@@ -66,7 +66,7 @@ void Piece::move(int dx, int dy, Stack* stack = nullptr){
   this -> position[0] += dx;
   this -> position[1] += dy;
   if (this -> wall_collision()){
-    this -> position[0] -= dx; //cofnij
+    this -> position[0] -= dx; //undo
     this -> position[1] -= dy;
   }
   else if(stack != nullptr && stack->check_collision_horizontally(this, dx)){
@@ -93,7 +93,6 @@ bool Piece::wall_collision(){
 }
 
 void Piece::rotate_clockwise(){
-  // cout<<"rotate_clockwise\n";
   vector<vector<bool>> rotated_shape(shape[0].size(), vector<bool>());
 
   //transpose
@@ -109,7 +108,6 @@ void Piece::rotate_clockwise(){
 }
 
 void Piece::rotate_counterclockwise(){
-  // cout<<"rotate_counterclockwise\n";
   vector<vector<bool>> rotated_shape(shape[0].size(), vector<bool>());
 
   //mirror vertically
@@ -120,11 +118,6 @@ void Piece::rotate_counterclockwise(){
   for (int i = 0; i<shape.size(); i++)
     for (int j=0; j<shape[i].size(); j++)
       rotated_shape[j].push_back(shape[i][j]);
-
-  // for (int i = 0; i<shape.size(); i++)
-  //   {for (int j=0; j<shape[i].size(); j++)
-  //     cout<<shape[i][j]<<" ";
-  //   cout<<endl;}
 
   this -> shape = rotated_shape;
 
