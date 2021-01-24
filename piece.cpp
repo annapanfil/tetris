@@ -12,7 +12,7 @@ using std::cout;
 using std::endl;
 
 Piece::Piece(Board* board):Shape(floor(((board->get_width())-PIXEL)/(2*PIXEL))*PIXEL,0,  board){
-  this -> shape = random_shape();
+  this -> random_shape();
   this -> color = sf::Color::Green;
 }
 
@@ -29,10 +29,10 @@ void Piece::draw(sf::RenderTarget& target, sf::RenderStates state) const{
   }
 }
 
-vector<vector<bool>> Piece::random_shape(){
+void Piece::random_shape(){
     srand (time(NULL));
-    int choice = rand() % 6;    //TODO: I horizontal movement and bottom collision
-    vector<vector<bool>> shape = {{},{}};
+    int choice = rand() % 7;
+    this->shape = {{},{}};
 
     switch(choice){
     case 0: //J
@@ -54,10 +54,9 @@ vector<vector<bool>> Piece::random_shape(){
       shape[0].insert(shape[0].end(),{1,1,0});
       shape[1].insert(shape[1].end(),{0,1,1}); break;
     case 6: //I
-      shape[0].insert(shape[0].end(),{1,1,1,1}); break;
+      shape[0].insert(shape[0].end(),{1,1,1,1});
+      rotate_clockwise(); rotate_clockwise(); break;
     }
-
-    return shape;
 }
 
 void Piece::move(int dx, int dy, Stack* stack = nullptr){

@@ -5,12 +5,12 @@
 class Stack;
 
 class Piece: public Shape{
-    vector<vector<bool>> random_shape();
+    void random_shape();
     void move(int dx, int dy, Stack* stack);
 public:
     Piece(Board* board);
     bool wall_collision();
-    void move_horizontally(int direction, Stack* stack);  //TODO: fix
+    void move_horizontally(int direction, Stack* stack);
     void move_down();
     void rotate_clockwise();
     void rotate_counterclockwise();
